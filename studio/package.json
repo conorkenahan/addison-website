@@ -1,0 +1,18 @@
+{
+  "name": "addison-studio",
+  "private": true,
+  "scripts": {
+    "dev": "sanity start",
+    "build": "sanity build",
+    "deploy": "sanity deploy"
+  },
+  "dependencies": {
+    "@sanity/cli": "^3.0.0",
+    "@sanity/base": "^3.0.0",
+    "@sanity/desk-tool": "^3.0.0",
+    "@sanity/vision": "^3.0.0",
+    "@sanity/image": "^0.140.0",
+    "@sanity/image-url": "^0.140.0",
+    "@sanity/types": "^3.0.0"
+  }
+}
