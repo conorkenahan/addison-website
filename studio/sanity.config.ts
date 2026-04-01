@@ -1,15 +1,18 @@
-import { defineConfig } from "sanity";
-import { deskTool } from "sanity/desk";
-import { visionTool } from "@sanity/vision";
-import { schemaTypes } from "./schemas/schema";
+import {defineConfig} from 'sanity'
+import {structureTool} from 'sanity/structure'
+import {visionTool} from '@sanity/vision'
+import {schemaTypes} from './schemaTypes'
 
 export default defineConfig({
-  name: "addison-studio",
-  title: "Addison Portfolio CMS",
-  projectId: process.env.SANITY_PROJECT_ID || "your_project_id",
-  dataset: process.env.SANITY_DATASET || "production",
-  plugins: [deskTool(), visionTool()],
+  name: 'default',
+  title: 'Addison Bale Website',
+
+  projectId: 'c8xyyk4x',
+  dataset: 'production',
+
+  plugins: [structureTool(), visionTool()],
+
   schema: {
     types: schemaTypes,
   },
-});
+})
