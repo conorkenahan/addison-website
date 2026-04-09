@@ -10,7 +10,7 @@ export const cvQuery = `*[_type == "cv"][0]{
   pdf{asset->{url}},
   sections[]{
     heading,
-    entries[]{year, description}
+    entries[]{year, title, description}
   }
 }`;
 

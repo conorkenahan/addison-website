@@ -5,6 +5,10 @@ async function getShow(id: string) {
     `*[_type == "show" && _id == $id][0]{
       _id,
       title,
+      year,
+      curator,
+      venue,
+      cityState,
       artworks[]{
         _key,
         title,
@@ -29,11 +33,14 @@ export default async function ShowPage({ params }: { params: Promise<{ id: strin
     );
   }
 
+  const meta = [show.year, show.curator, show.venue, show.cityState].filter(Boolean).join(" : ");
+
   return (
     <main className="px-10 py-16 max-w-3xl">
-      <h2 className="text-xs uppercase tracking-[0.25em] text-zinc-900 mb-10">
-        {show.title}
-      </h2>
+      <div className="mb-10 space-y-2">
+        <h2 className="text-xs uppercase tracking-[0.25em] text-zinc-900">"{show.title}"</h2>
+        {meta && <p className="text-xs text-zinc-500">{meta}</p>}
+      </div>
       <div className="space-y-16">
         {show.artworks?.map((item: any) => (
           <article key={item._key} className="space-y-3">

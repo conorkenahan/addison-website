@@ -46,14 +46,20 @@ const cv = {
                       description: 'e.g. "2024" or "2020–2023"',
                     },
                     {
+                      name: "title",
+                      title: "Title",
+                      type: "string",
+                      description: "Displayed in bold.",
+                    },
+                    {
                       name: "description",
                       title: "Description",
-                      type: "text",
-                      rows: 2,
+                      type: "string",
+                      description: "Displayed after the title in regular weight.",
                     },
                   ],
                   preview: {
-                    select: { title: "year", subtitle: "description" },
+                    select: { title: "title", subtitle: "description" },
                   },
                 },
               ],

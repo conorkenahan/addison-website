@@ -34,12 +34,20 @@ export default async function CVPage() {
                 {section.heading}
               </h2>
               <ul className="space-y-4">
-                {section.entries?.map((entry: any, j: number) => (
-                  <li key={j} className="flex gap-8 text-sm">
-                    <span className="w-12 shrink-0 text-zinc-400">{entry.year}</span>
-                    <span className="text-zinc-700 leading-7 whitespace-pre-wrap">{entry.description}</span>
-                  </li>
-                ))}
+                {section.entries?.map((entry: any, j: number) => {
+                  const prevYear = j > 0 ? section.entries[j - 1].year : null;
+                  const showYear = entry.year !== prevYear;
+                  return (
+                    <li key={j} className="flex gap-4 text-sm leading-7">
+                      <span className="w-10 shrink-0 text-zinc-400">{showYear ? entry.year : ""}</span>
+                      <span className="text-zinc-700">
+                        {entry.title && <strong className="font-semibold text-zinc-900">{entry.title}</strong>}
+                        {entry.title && entry.description && <span> </span>}
+                        {entry.description && <span>{entry.description}</span>}
+                      </span>
+                    </li>
+                  );
+                })}
               </ul>
             </section>
           ))}
