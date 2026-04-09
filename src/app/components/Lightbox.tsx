@@ -10,9 +10,10 @@ interface LightboxImage {
 
 interface LightboxProps {
   images: LightboxImage[];
+  constrainHeight?: boolean;
 }
 
-export function Lightbox({ images }: LightboxProps) {
+export function Lightbox({ images, constrainHeight }: LightboxProps) {
   const [active, setActive] = useState<number | null>(null);
 
   const close = () => setActive(null);
@@ -28,7 +29,7 @@ export function Lightbox({ images }: LightboxProps) {
               src={img.src}
               alt={img.alt}
               onClick={() => { if (window.innerWidth >= 768) setActive(i); }}
-              className="w-full object-cover md:cursor-zoom-in"
+              className={`w-full object-contain md:cursor-zoom-in${constrainHeight ? " max-h-[calc(100vh-12rem)]" : ""}`}
             />
             {img.caption && (
               <p className="text-xs text-zinc-900 leading-6">{img.caption}</p>
