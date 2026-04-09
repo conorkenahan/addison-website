@@ -1,6 +1,7 @@
+import homepage from "./homepage";
 import bio from "./bio";
 import cv from "./cv";
-import artwork from "./artwork";
+import show from "./show";
 import writing from "./writing";
 
-export const schemaTypes = [bio, cv, artwork, writing];
+export const schemaTypes = [homepage, bio, cv, show, writing];

@@ -1,33 +1,61 @@
-export default function WorksPage() {
-  return (
-    <div className="min-h-screen bg-background text-foreground">
-      <main className="mx-auto flex max-w-5xl flex-col gap-12 px-6 py-16 sm:px-10">
-        <section className="space-y-6">
-          <p className="text-sm uppercase tracking-[0.3em] text-zinc-500">Selected Works</p>
-          <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">
-            Archive of visual work organized by year.
-          </h1>
-          <p className="max-w-3xl text-base leading-8 text-zinc-600">
-            The works section will present selected artwork in a simple chronological structure,
-            making it easy for reviewers to scan by year and click through to individual projects.
-          </p>
-        </section>
+import { sanityClient, urlFor } from "@/lib/sanity";
+import { worksQuery } from "@/lib/queries";
 
-        <section className="grid gap-8">
-          <div className="rounded-3xl border border-zinc-200 p-8">
-            <h2 className="text-2xl font-semibold">2026</h2>
-            <p className="mt-3 text-zinc-600 leading-8">Featured works and exhibitions from the current year.</p>
-          </div>
-          <div className="rounded-3xl border border-zinc-200 p-8">
-            <h2 className="text-2xl font-semibold">2025</h2>
-            <p className="mt-3 text-zinc-600 leading-8">Selected projects, exhibitions, and notable work from 2025.</p>
-          </div>
-          <div className="rounded-3xl border border-zinc-200 p-8">
-            <h2 className="text-2xl font-semibold">2024</h2>
-            <p className="mt-3 text-zinc-600 leading-8">A concise archive of work from prior years, organized by date.</p>
-          </div>
-        </section>
-      </main>
-    </div>
+async function getWorks() {
+  return sanityClient.fetch(worksQuery);
+}
+
+interface Artwork {
+  _key: string;
+  title?: string;
+  date?: string;
+  medium?: string;
+  image?: any;
+}
+
+interface Show {
+  _id: string;
+  title: string;
+  slug: string;
+  artworks?: Artwork[];
+}
+
+export default async function WorksPage() {
+  const shows: Show[] = await getWorks() ?? [];
+
+  return (
+    <main className="px-10 py-16 max-w-3xl">
+      {shows.length ? (
+        <div className="space-y-24">
+          {shows.map((show) => (
+            <section key={show._id} id={show.slug} className="scroll-mt-8">
+              <h2 className="text-xs uppercase tracking-[0.25em] text-zinc-400 mb-10">
+                {show.title}
+              </h2>
+              <div className="space-y-16">
+                {show.artworks?.map((item) => (
+                  <article key={item._key} className="space-y-3">
+                    {item.image && (
+                      <img
+                        src={urlFor(item.image).width(1600).url()}
+                        alt={item.title ?? "Artwork"}
+                        className="w-full object-cover"
+                      />
+                    )}
+                    {(item.title || item.date || item.medium) && (
+                      <p className="text-xs text-zinc-400 leading-6">
+                        {[item.title, item.medium, item.date].filter(Boolean).join(", ")}
+                      </p>
+                    )}
+                  </article>
+                ))}
+              </div>
+            </section>
+          ))}
+        </div>
+      ) : (
+        <p className="text-sm text-zinc-500">No works available yet.</p>
+      )}
+    </main>
   );
 }

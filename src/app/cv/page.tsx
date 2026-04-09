@@ -1,34 +1,52 @@
-export default function CVPage() {
-  return (
-    <div className="min-h-screen bg-background text-foreground">
-      <main className="mx-auto flex max-w-4xl flex-col gap-10 px-6 py-16 sm:px-10">
-        <section className="space-y-6">
-          <p className="text-sm uppercase tracking-[0.3em] text-zinc-500">CV</p>
-          <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">
-            Downloadable professional resume.
-          </h1>
-          <p className="max-w-3xl text-base leading-8 text-zinc-600">
-            The CV will be managed as a PDF in the CMS and linked here from the live site.
-            This page can also include a short summary of the document and any key listings.
-          </p>
-        </section>
+import { sanityClient } from "@/lib/sanity";
+import { cvQuery } from "@/lib/queries";
 
-        <section className="rounded-3xl border border-zinc-200 p-8">
-          <h2 className="text-2xl font-semibold">Available as a PDF</h2>
-          <p className="mt-4 text-zinc-600 leading-8">
-            Once connected to Sanity, the CV page will render the latest uploaded PDF and allow
-            visitors to download it directly.
-          </p>
-          <div className="mt-8">
-            <a
-              href="#"
-              className="inline-flex rounded-full border border-black px-6 py-3 text-sm font-semibold transition hover:bg-black hover:text-white"
-            >
-              Download CV
-            </a>
-          </div>
-        </section>
-      </main>
-    </div>
+async function getCv() {
+  return sanityClient.fetch(cvQuery);
+}
+
+export default async function CVPage() {
+  const cv = await getCv();
+  const pdfUrl = cv?.pdf?.asset?.url;
+
+  return (
+    <main className="px-10 py-16 max-w-3xl">
+      {/* Download link */}
+      {pdfUrl && (
+        <div className="mb-16">
+          <a
+            href={pdfUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="text-xs uppercase tracking-[0.25em] text-zinc-400 hover:text-zinc-900 transition-colors underline underline-offset-4 decoration-zinc-300"
+          >
+            Download PDF
+          </a>
+        </div>
+      )}
+
+      {/* Structured CV sections */}
+      {cv?.sections?.length ? (
+        <div className="space-y-14">
+          {cv.sections.map((section: any, i: number) => (
+            <section key={i}>
+              <h2 className="text-xs uppercase tracking-[0.25em] text-zinc-400 mb-6">
+                {section.heading}
+              </h2>
+              <ul className="space-y-4">
+                {section.entries?.map((entry: any, j: number) => (
+                  <li key={j} className="flex gap-8 text-sm">
+                    <span className="w-12 shrink-0 text-zinc-400">{entry.year}</span>
+                    <span className="text-zinc-700 leading-7 whitespace-pre-wrap">{entry.description}</span>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          ))}
+        </div>
+      ) : (
+        <p className="text-sm text-zinc-500">CV content has not been added yet.</p>
+      )}
+    </main>
   );
 }

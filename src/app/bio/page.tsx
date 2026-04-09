@@ -1,50 +1,49 @@
 import Link from "next/link";
+import { sanityClient, urlFor } from "@/lib/sanity";
+import { bioQuery } from "@/lib/queries";
 
-export default function BioPage() {
+const defaultBio = `Hi ✎ My name is Addison Bale.
+Welcome to my blog :]
+
+(1994) born and raised in NYC. I am an artist working within a mixed practice of mostly poetry and painting, with particular attention to painting as a source language and scene for poems; poems as a visual cue for, if not generator of paintings. This duality of practice reflects translation, a process that is deeply embedded in my relationship to place, language, and art-making. Having had the opportunity to learn French, then Spanish, and volunteer briefly as an interpreter for people seeking asylum here in New York, I translate as a mode of entry into my own practice and research, translating poetry from Spanish into English, vice-versa, and translating text into painting. As an artist in residence with the Lab Program in Mexico City, I developed a body of poems that came out of a process of translation back and forth between US and Mexican authors, employing translated quotes and interpolation to weave original poems in Spanish, English, and Spanglish. These poems were published by the Lab Program in a chapbook called Galimatias. Some of the poems from this project were published in edition 09 of the Mexican literary journal DiSONARE in 2023. Poems of mine have also been published by Everybody Press, and No Dear. For my portfolio and/or other information about my studio and publications, feel free to reach out to me:`;
+
+async function getBio() {
+  return sanityClient.fetch(bioQuery);
+}
+
+export default async function BioPage() {
+  const bio = await getBio();
+
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <main className="mx-auto flex max-w-4xl flex-col gap-10 px-6 py-16 sm:px-10">
-        <section className="space-y-6">
-          <p className="text-sm uppercase tracking-[0.3em] text-zinc-500">Bio</p>
-          <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">
-            Professional overview and creative profile.
-          </h1>
-          <p className="max-w-3xl text-base leading-8 text-zinc-600">
-            This section will present a concise artist statement, education and background,
-            and a clear link to contact information. The layout stays calm and editorial,
-            with a strong focus on readability.
-          </p>
-        </section>
+      <main className="mx-auto max-w-4xl px-6 py-24 sm:px-10">
+        <p className="text-xs uppercase tracking-[0.35em] text-zinc-500">Bio</p>
+        <h1 className="mt-8 text-5xl font-semibold tracking-tight sm:text-6xl">
+          {bio?.name ?? "About the artist"}
+        </h1>
+        <div className="mt-10 space-y-8 text-base leading-9 text-zinc-700">
+          <p className="whitespace-pre-wrap">{bio?.profile ?? defaultBio}</p>
+          <div className="bio-links">
+             <p><a href="mailto:sayhey.adi@gmail.com">sayhey.adi@gmail.com</a></p>
+             <a href="https://www.instagram.com/addison_bale/">@addison_bale</a>
+          </div>
+        </div>
 
-        <section className="grid gap-6 sm:grid-cols-[1fr_180px]">
-          <div className="space-y-6 rounded-3xl border border-zinc-200 p-8">
-            <h2 className="text-2xl font-semibold">About</h2>
-            <p className="text-zinc-600 leading-8">
-              Add a short biography here that covers the client’s artistic interests,
-              practice, and what he wants the site to communicate when applying for grants.
-            </p>
-            <p className="text-zinc-600 leading-8">
-              This can be edited through the CMS once we connect Sanity, so the site stays
-              up to date without redeploying.
-            </p>
+        {bio?.headshot && (
+          <div className="mt-16">
+            <img
+              src={urlFor(bio.headshot).width(1200).url()}
+              alt={bio.name ?? "Artist headshot"}
+              className="w-full object-cover"
+            />
           </div>
-          <div className="space-y-5 rounded-3xl border border-zinc-200 p-8">
-            <div>
-              <p className="text-sm uppercase tracking-[0.3em] text-zinc-500">Quick details</p>
-              <ul className="mt-4 space-y-3 text-sm leading-7 text-zinc-600">
-                <li>Location: [City, Region]</li>
-                <li>Mediums: Writing, painting, visual work</li>
-                <li>Contact: [email@example.com]</li>
-              </ul>
-            </div>
-            <Link
-              href="/cv"
-              className="inline-flex rounded-full border border-black px-5 py-3 text-sm font-semibold transition hover:bg-black hover:text-white"
-            >
-              View CV
-            </Link>
-          </div>
-        </section>
+        )}
+
+        <div className="mt-16">
+          <Link href="/cv" className="text-sm uppercase tracking-[0.35em] text-zinc-900 underline underline-offset-4 decoration-zinc-900">
+            View CV
+          </Link>
+        </div>
       </main>
     </div>
   );

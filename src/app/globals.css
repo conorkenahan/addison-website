@@ -12,8 +12,12 @@
   --color-foreground: var(--foreground);
   --color-muted: var(--muted);
   --color-border: var(--border);
-  --font-sans: var(--font-geist-sans);
+  --font-sans: "Times New Roman", Times, serif;
   --font-mono: var(--font-geist-mono);
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
@@ -21,7 +25,8 @@ body {
   margin: 0;
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-sans), system-ui, sans-serif;
+  font-family: var(--font-sans);
+  text-rendering: optimizeLegibility;
 }
 
 a {
