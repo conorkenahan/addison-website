@@ -17,7 +17,7 @@ export default async function Home() {
     <main className="px-10 py-16 max-w-3xl h-screen flex flex-col justify-center">
       {images.length > 0 && (
         <div className="space-y-4 min-h-0">
-          <Lightbox images={images} constrainHeight />
+          <Lightbox images={images} />
           {work.title && (
             <p className="text-xs uppercase tracking-[0.25em] text-zinc-400">{work.title}</p>
           )}

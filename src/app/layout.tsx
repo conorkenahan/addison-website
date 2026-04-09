@@ -35,7 +35,7 @@ export default async function RootLayout({
   const shows = await getShows();
 
   return (
-    <html lang="en" className={`${ibmPlexSans.variable} ${robotoMono.variable} h-full`}>
+    <html lang="en" className={`${ibmPlexSans.variable} ${robotoMono.variable} h-full`} data-scroll-behavior="smooth">
       <body className="min-h-full bg-background text-foreground">
         <Sidebar shows={shows ?? []} />
         <div className="md:ml-72 pt-12 md:pt-0">
