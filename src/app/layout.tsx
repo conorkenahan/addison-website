@@ -1,13 +1,20 @@
 import type { Metadata } from "next";
-import { Geist_Mono } from "next/font/google";
+import { IBM_Plex_Sans, Roboto_Mono } from "next/font/google";
 import { Sidebar } from "./components/Sidebar";
 import { sanityClient } from "@/lib/sanity";
 import { showsQuery } from "@/lib/queries";
 import "./globals.css";
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const ibmPlexSans = IBM_Plex_Sans({
+  variable: "--font-sans",
   subsets: ["latin"],
+  weight: ["400", "500", "600"],
+});
+
+const robotoMono = Roboto_Mono({
+  variable: "--font-mono",
+  subsets: ["latin"],
+  weight: ["400"],
 });
 
 export const metadata: Metadata = {
@@ -28,10 +35,9 @@ export default async function RootLayout({
   const shows = await getShows();
 
   return (
-    <html lang="en" className={`${geistMono.variable} h-full`}>
+    <html lang="en" className={`${ibmPlexSans.variable} ${robotoMono.variable} h-full`}>
       <body className="min-h-full bg-background text-foreground">
         <Sidebar shows={shows ?? []} />
-        {/* Offset for desktop sidebar / mobile top bar */}
         <div className="md:ml-72 pt-12 md:pt-0">
           {children}
         </div>
