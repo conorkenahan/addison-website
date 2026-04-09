@@ -30,8 +30,12 @@ export function Sidebar({ shows }: SidebarProps) {
         >
           Works
         </span>
-        {worksOpen && shows.length > 0 && (
-          <ul className="mt-3 md:ml-0 ml-4 flex flex-col gap-2">
+        {shows.length > 0 && (
+          <ul
+            className={`ml-4 flex flex-col gap-2 overflow-hidden transition-all duration-300 ease-in-out ${
+              worksOpen ? "max-h-96 mt-3 opacity-100" : "max-h-0 mt-0 opacity-0"
+            }`}
+          >
             {shows.map((show) => (
               <li key={show._id}>
                 <Link
@@ -49,6 +53,10 @@ export function Sidebar({ shows }: SidebarProps) {
 
       <Link href="/writing" className={linkClass} onClick={() => setMobileOpen(false)}>
         Writing
+      </Link>
+
+      <Link href="/about" className={linkClass} onClick={() => setMobileOpen(false)}>
+        About
       </Link>
 
       <Link href="/cv" className={linkClass} onClick={() => setMobileOpen(false)}>
@@ -72,12 +80,14 @@ export function Sidebar({ shows }: SidebarProps) {
         </span>
       </div>
 
-      {/* Mobile dropdown */}
-      {mobileOpen && (
-        <div className="md:hidden fixed top-12 left-0 right-0 z-20 bg-background border-b border-border px-6 pt-6 pb-8 flex flex-col gap-5">
-          {navItems}
-        </div>
-      )}
+      {/* Mobile dropdown — always mounted, slides in/out */}
+      <div
+        className={`md:hidden fixed top-12 left-0 right-0 z-20 bg-background border-b border-border px-6 flex flex-col gap-5 overflow-hidden transition-all duration-300 ease-in-out ${
+          mobileOpen ? "max-h-96 pt-6 pb-8 opacity-100" : "max-h-0 py-0 opacity-0"
+        }`}
+      >
+        {navItems}
+      </div>
 
       {/* Desktop sidebar */}
       <aside className="hidden md:flex fixed top-0 left-0 h-screen w-72 flex-col px-6 py-10 border-r border-border bg-background z-20">

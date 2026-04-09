@@ -1,8 +1,8 @@
 export const bioQuery = `*[_type == "bio"][0]{
   name,
   profile,
-  contact,
-  headshot
+  headshot,
+  contact[]{label, url}
 }`;
 
 export const cvQuery = `*[_type == "cv"][0]{

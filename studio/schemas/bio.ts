@@ -15,16 +15,39 @@ const bio = {
       description: "Short bio statement.",
     },
     {
-      name: "contact",
-      title: "Contact",
-      type: "array",
-      of: [{ type: "string" }],
-      description: "Use this for email, website, or social handles.",
-    },
-    {
       name: "headshot",
       title: "Headshot",
       type: "image",
+    },
+    {
+      name: "contact",
+      title: "Contact",
+      type: "array",
+      of: [
+        {
+          type: "object",
+          name: "contactItem",
+          fields: [
+            {
+              name: "label",
+              title: "Label",
+              type: "string",
+              description: 'e.g. "Instagram", "Email"',
+            },
+            {
+              name: "url",
+              title: "URL",
+              type: "url",
+              description: 'e.g. "https://instagram.com/addison_bale" or "mailto:you@email.com"',
+              validation: (Rule: any) =>
+                Rule.uri({ scheme: ["http", "https", "mailto"] }),
+            },
+          ],
+          preview: {
+            select: { title: "label", subtitle: "url" },
+          },
+        },
+      ],
     },
   ],
 };
