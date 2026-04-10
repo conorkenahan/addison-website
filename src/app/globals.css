@@ -20,6 +20,10 @@ html {
   scroll-behavior: smooth;
 }
 
+*, *::before, *::after {
+  cursor: url('/paintbrush.svg') 0 32, auto !important;
+}
+
 body {
   min-height: 100vh;
   margin: 0;
